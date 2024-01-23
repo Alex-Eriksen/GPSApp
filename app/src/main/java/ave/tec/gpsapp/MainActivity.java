@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
 
     private TextView txt_latitude, txt_longitude, txt_speed, txt_accuracy, txt_altitude, txt_bearing;
 
-    private Timer timer = new Timer();
+    private final Timer timer = new Timer();
 
     private boolean mAutoUpdate = false;
 
