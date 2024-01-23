@@ -2,24 +2,38 @@ package ave.tec.gpsapp;
 
 import static com.google.android.gms.location.LocationServices.getFusedLocationProviderClient;
 
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-
 import android.Manifest;
-
 import android.content.pm.PackageManager;
+import android.location.Location;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SwitchCompat;
+import androidx.core.app.ActivityCompat;
+
+import com.google.android.gms.location.CurrentLocationRequest;
 import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.Priority;
+import com.google.android.material.chip.Chip;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class MainActivity extends AppCompatActivity {
     private FusedLocationProviderClient fusedLocationClient;
 
     private TextView txt_latitude, txt_longitude, txt_speed, txt_accuracy, txt_altitude, txt_bearing;
+
+    private Timer timer = new Timer();
+
+    private boolean mAutoUpdate = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,34 +47,60 @@ public class MainActivity extends AppCompatActivity {
         txt_altitude = (TextView) findViewById(R.id.txt_altitude);
         txt_bearing = (TextView) findViewById(R.id.txt_bearing);
 
+        ((Button) findViewById(R.id.btn_refresh)).setOnClickListener(this::update);
+
+        timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                if (mAutoUpdate == false)
+                {
+                    return;
+                }
+                getUpdates();
+            }
+        },0,1000);
+
+        ((SwitchCompat) findViewById(R.id.sw_auto_update)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                mAutoUpdate = b;
+            }
+        });
+
         fusedLocationClient = getFusedLocationProviderClient(this);
         getUpdates();
     }
 
+    private void update(View view) {
+        getUpdates();
+    }
+
     private void getUpdates() {
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)
-        {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             permissions();
             return;
         }
 
+        fusedLocationClient.getCurrentLocation(new CurrentLocationRequest.Builder().setPriority(Priority.PRIORITY_HIGH_ACCURACY).build(), null);
+
         fusedLocationClient.getLastLocation().addOnSuccessListener(this, location -> {
-            if (location == null)
-            {
+            if (location == null) {
                 txt_latitude.setText("N/A");
                 txt_longitude.setText("N/A");
                 Toast.makeText(MainActivity.this, "Location is null.", Toast.LENGTH_SHORT).show();
-            }
-            else
-            {
-                setLatitude(location.getLatitude());
-                setLongitude(location.getLongitude());
-                setSpeed(location.getSpeed());
-                setAccuracy(location.getAccuracy());
-                setAltitude(location.getAltitude());
-                setBearing(location.getBearing());
+            } else {
+                updateLocation(location);
             }
         });
+    }
+
+    private void updateLocation(Location location){
+        setLatitude(location.getLatitude());
+        setLongitude(location.getLongitude());
+        setSpeed(location.getSpeed());
+        setAccuracy(location.getAccuracy());
+        setAltitude(location.getAltitude());
+        setBearing(location.getBearing());
     }
 
     private void setLatitude(double latitude)

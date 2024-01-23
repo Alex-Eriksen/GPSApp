@@ -132,4 +132,23 @@
         app:layout_constraintTop_toTopOf="@id/txt_bearing_title"
         android:layout_marginStart="12sp"
         />
+
+    <Button
+        android:id="@+id/btn_refresh"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Refresh"
+        android:layout_marginTop="40sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/txt_bearing_title" />
+
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/sw_auto_update"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Auto Update"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_refresh" />
 </androidx.constraintlayout.widget.ConstraintLayout>
