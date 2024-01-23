@@ -97,10 +97,18 @@ public class MainActivity extends AppCompatActivity {
     private void updateLocation(Location location){
         setLatitude(location.getLatitude());
         setLongitude(location.getLongitude());
-        setSpeed(location.getSpeed());
-        setAccuracy(location.getAccuracy());
-        setAltitude(location.getAltitude());
-        setBearing(location.getBearing());
+        if (location.hasSpeed()){
+            setSpeed(location.getSpeed());
+        }
+        if(location.hasAccuracy()){
+            setAccuracy(location.getAccuracy());
+        }
+        if(location.hasAltitude()){
+            setAltitude(location.getAltitude());
+        }
+        if(location.hasBearing()){
+            setBearing(location.getBearing());
+        }
     }
 
     private void setLatitude(double latitude)
