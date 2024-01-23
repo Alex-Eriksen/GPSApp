@@ -21,7 +21,6 @@ import androidx.core.app.ActivityCompat;
 import com.google.android.gms.location.CurrentLocationRequest;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.Priority;
-import com.google.android.material.chip.Chip;
 
 import java.util.Timer;
 import java.util.TimerTask;
