@@ -48,4 +48,88 @@
         app:layout_constraintTop_toTopOf="@id/txt_longitude_title"
         android:layout_marginStart="12sp"
         />
+
+    <TextView
+        android:id="@+id/txt_speed_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/speed"
+        app:layout_constraintTop_toBottomOf="@id/txt_longitude_title"
+        app:layout_constraintStart_toStartOf="@id/txt_longitude_title"
+        android:textSize="18sp"
+        />
+
+    <TextView
+        android:id="@+id/txt_speed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="999"
+        android:textSize="18sp"
+        app:layout_constraintStart_toEndOf="@id/txt_speed_title"
+        app:layout_constraintTop_toTopOf="@id/txt_speed_title"
+        android:layout_marginStart="12sp"
+        />
+
+    <TextView
+        android:id="@+id/txt_accuracy_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/accuracy"
+        app:layout_constraintTop_toBottomOf="@id/txt_speed_title"
+        app:layout_constraintStart_toStartOf="@id/txt_speed_title"
+        android:textSize="18sp"
+        />
+
+    <TextView
+        android:id="@+id/txt_accuracy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="55555"
+        android:textSize="18sp"
+        app:layout_constraintStart_toEndOf="@id/txt_accuracy_title"
+        app:layout_constraintTop_toTopOf="@id/txt_accuracy_title"
+        android:layout_marginStart="12sp"
+        />
+
+    <TextView
+        android:id="@+id/txt_altitude_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/altitude"
+        app:layout_constraintTop_toBottomOf="@id/txt_accuracy_title"
+        app:layout_constraintStart_toStartOf="@id/txt_accuracy_title"
+        android:textSize="18sp"
+        />
+
+    <TextView
+        android:id="@+id/txt_altitude"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="55555"
+        android:textSize="18sp"
+        app:layout_constraintStart_toEndOf="@id/txt_altitude_title"
+        app:layout_constraintTop_toTopOf="@id/txt_altitude_title"
+        android:layout_marginStart="12sp"
+        />
+
+    <TextView
+        android:id="@+id/txt_bearing_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/bearing"
+        app:layout_constraintTop_toBottomOf="@id/txt_altitude_title"
+        app:layout_constraintStart_toStartOf="@id/txt_altitude_title"
+        android:textSize="18sp"
+        />
+
+    <TextView
+        android:id="@+id/txt_bearing"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="1515151"
+        android:textSize="18sp"
+        app:layout_constraintStart_toEndOf="@id/txt_bearing_title"
+        app:layout_constraintTop_toTopOf="@id/txt_bearing_title"
+        android:layout_marginStart="12sp"
+        />
 </androidx.constraintlayout.widget.ConstraintLayout>

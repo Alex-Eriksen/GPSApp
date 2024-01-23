@@ -19,8 +19,7 @@ import com.google.android.gms.location.FusedLocationProviderClient;
 public class MainActivity extends AppCompatActivity {
     private FusedLocationProviderClient fusedLocationClient;
 
-    private TextView txt_latitude;
-    private TextView txt_longitude;
+    private TextView txt_latitude, txt_longitude, txt_speed, txt_accuracy, txt_altitude, txt_bearing;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +28,10 @@ public class MainActivity extends AppCompatActivity {
 
         txt_latitude = (TextView) findViewById(R.id.txt_latitude);
         txt_longitude = (TextView) findViewById(R.id.txt_longitude);
+        txt_speed = (TextView) findViewById(R.id.txt_speed);
+        txt_accuracy = (TextView) findViewById(R.id.txt_accuracy);
+        txt_altitude = (TextView) findViewById(R.id.txt_altitude);
+        txt_bearing = (TextView) findViewById(R.id.txt_bearing);
 
         fusedLocationClient = getFusedLocationProviderClient(this);
         getUpdates();
@@ -52,6 +55,10 @@ public class MainActivity extends AppCompatActivity {
             {
                 setLatitude(location.getLatitude());
                 setLongitude(location.getLongitude());
+                setSpeed(location.getSpeed());
+                setAccuracy(location.getAccuracy());
+                setAltitude(location.getAltitude());
+                setBearing(location.getBearing());
             }
         });
     }
@@ -63,6 +70,22 @@ public class MainActivity extends AppCompatActivity {
     private void setLongitude(double longitude)
     {
         txt_longitude.setText(String.valueOf(longitude));
+    }
+    private void setSpeed(float speed)
+    {
+        txt_speed.setText(String.valueOf(speed));
+    }
+    private void setAccuracy(float accuracy)
+    {
+        txt_accuracy.setText(String.valueOf(accuracy));
+    }
+    private void setAltitude(double altitude)
+    {
+        txt_altitude.setText(String.valueOf(altitude));
+    }
+    private void setBearing(float bearing)
+    {
+        txt_bearing.setText(String.valueOf(bearing));
     }
 
     private void permissions()
