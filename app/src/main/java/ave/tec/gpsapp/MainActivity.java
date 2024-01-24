@@ -88,12 +88,12 @@ public class MainActivity extends AppCompatActivity {
                 txt_longitude.setText("N/A");
                 Toast.makeText(MainActivity.this, "Location is null.", Toast.LENGTH_SHORT).show();
             } else {
-                updateLocation(location);
+                setLocation(location);
             }
         });
     }
 
-    private void updateLocation(Location location){
+    private void setLocation(Location location){
         setLatitude(location.getLatitude());
         setLongitude(location.getLongitude());
         if (location.hasSpeed()){

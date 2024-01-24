@@ -6,4 +6,6 @@
     <string name="accuracy">Accuracy</string>
     <string name="altitude">Altitude</string>
     <string name="bearing">Bearing</string>
+    <string name="refresh">Refresh</string>
+    <string name="auto_update">Auto Update</string>
 </resources>
