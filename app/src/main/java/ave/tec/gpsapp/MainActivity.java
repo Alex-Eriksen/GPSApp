@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
-                if (mAutoUpdate == false)
+                if (!mAutoUpdate)
                 {
                     return;
                 }
