@@ -6,6 +6,7 @@ import android.Manifest;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
@@ -25,6 +26,8 @@ import com.google.android.gms.location.Priority;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import ave.tec.gpsapp.locationservice.LocationService;
+
 public class MainActivity extends AppCompatActivity {
     private FusedLocationProviderClient fusedLocationClient;
 
@@ -33,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
     private final Timer timer = new Timer();
 
     private boolean mAutoUpdate = false;
+    public static Location currentLocation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,13 +55,12 @@ public class MainActivity extends AppCompatActivity {
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
-                if (!mAutoUpdate)
-                {
+                if (!mAutoUpdate) {
                     return;
                 }
                 getUpdates();
             }
-        },0,1000);
+        }, 0, 1000);
 
         ((SwitchCompat) findViewById(R.id.sw_auto_update)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -68,10 +71,18 @@ public class MainActivity extends AppCompatActivity {
 
         fusedLocationClient = getFusedLocationProviderClient(this);
         getUpdates();
+
+        Log.d("main", "Thread " + Thread.currentThread().getId() + " is running");
+
     }
 
     private void update(View view) {
-        getUpdates();
+//        getUpdates();
+        if (currentLocation == null) {
+            return;
+        }
+        MultithreadingDemo object = new MultithreadingDemo();
+        object.start();
     }
 
     private void getUpdates() {
@@ -93,83 +104,81 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void setLocation(Location location){
+    private void setLocation(Location location) {
+        currentLocation = location;
         setLatitude(location.getLatitude());
         setLongitude(location.getLongitude());
-        if (location.hasSpeed()){
+        if (location.hasSpeed()) {
             setSpeed(location.getSpeed());
         }
-        if(location.hasAccuracy()){
+        if (location.hasAccuracy()) {
             setAccuracy(location.getAccuracy());
         }
-        if(location.hasAltitude()){
+        if (location.hasAltitude()) {
             setAltitude(location.getAltitude());
         }
-        if(location.hasBearing()){
+        if (location.hasBearing()) {
             setBearing(location.getBearing());
         }
     }
 
-    private void setLatitude(double latitude)
-    {
+    private void setLatitude(double latitude) {
         txt_latitude.setText(String.valueOf(latitude));
     }
-    private void setLongitude(double longitude)
-    {
+
+    private void setLongitude(double longitude) {
         txt_longitude.setText(String.valueOf(longitude));
     }
-    private void setSpeed(float speed)
-    {
+
+    private void setSpeed(float speed) {
         txt_speed.setText(String.valueOf(speed));
     }
-    private void setAccuracy(float accuracy)
-    {
+
+    private void setAccuracy(float accuracy) {
         txt_accuracy.setText(String.valueOf(accuracy));
     }
-    private void setAltitude(double altitude)
-    {
+
+    private void setAltitude(double altitude) {
         txt_altitude.setText(String.valueOf(altitude));
     }
-    private void setBearing(float bearing)
-    {
+
+    private void setBearing(float bearing) {
         txt_bearing.setText(String.valueOf(bearing));
     }
 
-    private void permissions()
-    {
+    private void permissions() {
         ActivityResultLauncher<String[]> locationPermissionRequest =
                 registerForActivityResult(new ActivityResultContracts.RequestMultiplePermissions(),
                         result -> {
                             Boolean fineLocationGranted = result.getOrDefault(Manifest.permission.ACCESS_FINE_LOCATION, false);
 
-                            Boolean coarseLocationGranted = result.getOrDefault(Manifest.permission.ACCESS_COARSE_LOCATION,false);
+                            Boolean coarseLocationGranted = result.getOrDefault(Manifest.permission.ACCESS_COARSE_LOCATION, false);
 
-                            if (fineLocationGranted != null && fineLocationGranted)
-                            {
+                            if (fineLocationGranted != null && fineLocationGranted) {
                                 // Precise location access granted.
                                 Toast.makeText(MainActivity.this, "Fine permissions granted.", Toast.LENGTH_SHORT).show();
                                 getUpdates();
-                            }
-                            else if (coarseLocationGranted != null && coarseLocationGranted)
-                            {
+                            } else if (coarseLocationGranted != null && coarseLocationGranted) {
                                 // Only approximate location access granted.
                                 Toast.makeText(MainActivity.this, "Coarse permissions granted.", Toast.LENGTH_SHORT).show();
-                            }
-                            else
-                            {
+                            } else {
                                 // No location access granted.
                                 Toast.makeText(MainActivity.this, "Lacking permissions.", Toast.LENGTH_SHORT).show();
                             }
                         }
                 );
-
-        // Before you perform the actual permission request, check whether your app
-        // already has the permissions, and whether your app needs to show a permission
-        // rationale dialog. For more details, see Request permissions.
-        locationPermissionRequest.launch(new String[] {
+        locationPermissionRequest.launch(new String[]{
                 Manifest.permission.ACCESS_FINE_LOCATION,
                 Manifest.permission.ACCESS_COARSE_LOCATION
         });
 
+    }
+}
+
+class MultithreadingDemo extends Thread {
+    public void run() {
+        Log.d("main", "Thread " + Thread.currentThread().getId() + " is running");
+        LocationService.INSTANCE().uploadLocation(MainActivity.currentLocation);
+        Log.d("main", "Thread " + Thread.currentThread().getId() + " has finished");
     }
 }
