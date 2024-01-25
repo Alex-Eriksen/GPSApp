@@ -39,10 +39,10 @@ public class LocationService {
             String connString =
                     "jdbc:sqlserver://" + mIP + ":" + mPort + ";"
                             + "databaseName=" + mDatabase + ";"
-                            + "user=" + mUsername + ";"
+                            + "user=" + mUsername + "@" + mIP + ";"
                             + "password=" + mPassword + ";"
                             + "encrypt=true;"
-                            + "trustServerCertificate=false;"
+                            + "trustServerCertificate=true;"
                             + "loginTimeout=30;";
 
             return DriverManager.getConnection(connString);

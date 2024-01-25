@@ -6,6 +6,7 @@ import android.Manifest;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -177,6 +178,8 @@ public class MainActivity extends AppCompatActivity {
 
 class MultithreadingDemo extends Thread {
     public void run() {
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
         Log.d("main", "Thread " + Thread.currentThread().getId() + " is running");
         LocationService.INSTANCE().uploadLocation(MainActivity.currentLocation);
         Log.d("main", "Thread " + Thread.currentThread().getId() + " has finished");
